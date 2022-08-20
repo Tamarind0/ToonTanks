@@ -26,7 +26,7 @@ ABasePawn::ABasePawn()
 
 void ABasePawn::RotateTurret(FVector LookAtTurret)
 {
-	// getting the vector we want to loo at by subtracting hte end point - starting point
+	// getting the vector we want to look at by subtracting the end point - starting point
 	FVector ToTargert = LookAtTurret - TurretMesh->GetComponentLocation(); // world rotation not an offset
 	FRotator LookAtRotation = ToTargert.Rotation();
 	LookAtRotation.Pitch = 0.f;

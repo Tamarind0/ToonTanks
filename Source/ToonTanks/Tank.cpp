@@ -20,7 +20,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();	
-// casting bc GetController returns AController but we need APlayerController, AContrller can be casted to APlayerController bc AContrller is a pointer to APlayerController.
+    // casting bc GetController returns AController but we need APlayerController, AContrller can be casted to APlayerController bc AContrller is a pointer to APlayerController.
     PlayerController = Cast<APlayerController>(GetController()); 
     //AController is a parent class
     //APlayerController is a parent class
@@ -44,6 +44,9 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     //finding our actions to input bindings
     PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ATank::Move);
     PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ATank::Turn);
+
+    //binding our action mapping to our Fire function from BasePawn
+    PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &ATank::Fire);
 }
 
 void ATank::Move(float Value)

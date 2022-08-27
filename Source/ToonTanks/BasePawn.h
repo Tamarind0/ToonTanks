@@ -29,4 +29,5 @@ private:
 	USceneComponent* ProjectileSpawnPoint;
 protected:
 	void RotateTurret(FVector LookAtTurret);
+	void Fire();
 };

@@ -23,4 +23,8 @@ protected:
 
 private:
 	class ATank* Tank;
+	bool InRange();
+	FTimerHandle FireRateTimerHandle;
+	float FireRate = 2.f;
+	void CheckFireCondition();
 };

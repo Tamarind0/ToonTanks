@@ -22,6 +22,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 		class UProjectileMovementComponent* movementComponent;
+
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UPROPERTY(EditAnywhere)
+		float Damage = 100.f;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

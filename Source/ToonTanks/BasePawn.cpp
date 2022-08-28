@@ -50,5 +50,8 @@ void ABasePawn::Fire()
 		FColor::Red,
 		false,
 		3.f);
-	GetWorld()->SpawnActor<AProjectile>(ProjectileClass, projectileSpawnPointLocation, projectileSpawnPointRotation);
+
+	//setting the owner of the projectile to the actor that shot it, used in taking damage
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, projectileSpawnPointLocation, projectileSpawnPointRotation);
+	Projectile->SetOwner(this);
 }

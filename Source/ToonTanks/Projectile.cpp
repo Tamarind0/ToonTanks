@@ -3,6 +3,8 @@
 
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameFramework/DamageType.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 AProjectile::AProjectile()
 {
@@ -21,13 +23,32 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	// setting up delegate for hit event
+	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
 // Called every frame
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+}
+void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	auto MyOwner = GetOwner();
+	if (MyOwner == nullptr) return;
+	//needed to ApplyDamage in teh HealthComponent class
+	auto MyInstigator = MyOwner->GetInstigatorController();
+	//needed parameter
+	auto DamageTypeClass = UDamageType::StaticClass();
+
+	if (OtherActor != nullptr && OtherActor != this && OtherActor != MyOwner)
+	{
+		// Generates the damage event which will call the OnTakeDamage delegate that is in HealthComponent and will broadcast to its subscribers
+		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyInstigator, this, DamageTypeClass); 
+		Destroy();
+	}
+
 
 }
 

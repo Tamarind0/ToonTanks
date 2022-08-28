@@ -60,7 +60,7 @@ void ATank::Move(float Value)
 void ATank::Turn(float Value)
 {
     FRotator DeltaRotation = FRotator::ZeroRotator;
-    UE_LOG(LogTemp, Display, TEXT("turning"));
+  //  UE_LOG(LogTemp, Display, TEXT("turning"));
     DeltaRotation.Yaw = Value * turnRate * UGameplayStatics::GetWorldDeltaSeconds(this);
     AddActorLocalRotation(DeltaRotation, true);
 

@@ -27,6 +27,11 @@ void ATurret::Tick(float DealtaTime)
 
     
 }
+void ATurret::HandleDestruction()
+{
+    Super::HandleDestruction();
+    Destroy();
+}
 
 bool ATurret::InRange()
 {

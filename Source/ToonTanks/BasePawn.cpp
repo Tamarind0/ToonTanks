@@ -55,3 +55,8 @@ void ABasePawn::Fire()
 	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, projectileSpawnPointLocation, projectileSpawnPointRotation);
 	Projectile->SetOwner(this);
 }
+void ABasePawn::HandleDestruction()
+{
+	//TODO: Visual/sound effects
+
+}

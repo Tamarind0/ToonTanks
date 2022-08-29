@@ -36,6 +36,13 @@ void ATank::Tick(float DeltaTime)
         RotateTurret(HitResult.ImpactPoint); // got this from the super class
     }
 }
+void ATank::HandleDestruction()
+{
+    Super::HandleDestruction();
+    //hiding the player so they can see where they died before restarting the game
+    SetActorHiddenInGame(true);
+    SetActorTickEnabled(false);
+}
 
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

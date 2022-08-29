@@ -26,6 +26,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void HandleDestruction();
+
+	APlayerController* GetPlayerController() const { return PlayerController; }
 private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -36,7 +39,6 @@ private:
 
 	void Move(float Value);
 	void Turn(float VAlue);
-
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float speed = 200.f;
 

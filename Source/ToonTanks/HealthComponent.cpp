@@ -2,7 +2,8 @@
 
 
 #include "HealthComponent.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "ToonTanksGameModeBase.h"
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
@@ -22,7 +23,10 @@ void UHealthComponent::BeginPlay()
 	//binding the event OnTakeAnyDamage to our DamageTaken func
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::DamageTaken);
-	// ...
+	
+	//getting a reference to the gamemode so we can end the game when the player dies
+	// casting bc UGameplayStatics::GetGameMode(this) return a GameModeBase not a AToonTankGameModeBase
+	GameMode = Cast<AToonTanksGameModeBase>(UGameplayStatics::GetGameMode(this));
 	
 }
 
@@ -31,8 +35,6 @@ void UHealthComponent::BeginPlay()
 void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 //called when OnTakeAnyDamage is triggered which is triggered by the Projectile class in the Fire function when OnHit is called
@@ -40,6 +42,10 @@ void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDa
 {
 	if (Damage <= 0.f) return;
 	Health -= Damage;
+	if (Health <= 0.f && GameMode)
+	{
+		GameMode->ActorDied(DamagedActor);
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health);
 }
 

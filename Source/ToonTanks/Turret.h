@@ -17,6 +17,7 @@ public:
 	virtual void Tick(float DealtaTime) override;
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float FireRange = 300;
+	void HandleDestruction();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

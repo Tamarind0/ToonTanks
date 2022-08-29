@@ -28,9 +28,11 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Componets", meta = (AllowPrivateAccess = true))
 	USceneComponent* ProjectileSpawnPoint;
 
+	// used to spawn our blueprint projectile
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass;
 protected:
 	void RotateTurret(FVector LookAtTurret);
 	void Fire();
+	void HandleDestruction();
 };

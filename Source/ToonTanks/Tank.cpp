@@ -42,6 +42,7 @@ void ATank::HandleDestruction()
     //hiding the player so they can see where they died before restarting the game
     SetActorHiddenInGame(true);
     SetActorTickEnabled(false);
+    bAlive = false;
 }
 
 // Called to bind functionality to input

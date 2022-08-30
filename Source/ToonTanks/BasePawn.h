@@ -32,8 +32,18 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass;
 
+	//paticle system
 	UPROPERTY(EditAnywhere, Category = "Combat")
 		class UParticleSystem* DeathParticles;
+
+	//audio
+		//audio
+	UPROPERTY(EditAnywhere, Category = "Sound")
+		class USoundBase* DeathSound;
+	//camera shake
+	UPROPERTY(EditAnywhere, Category = "Camera")
+		TSubclassOf<class UCameraShakeBase> DeathCameraShakeClass;
+
 protected:
 	void RotateTurret(FVector LookAtTurret);
 	void Fire();

@@ -29,6 +29,8 @@ public:
 	void HandleDestruction();
 
 	APlayerController* GetPlayerController() const { return PlayerController; }
+
+	bool bAlive = true;
 private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")

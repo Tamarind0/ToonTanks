@@ -50,7 +50,11 @@ bool ATurret::InRange()
 }
 void ATurret::CheckFireCondition()
 {
-    if (InRange())
+    if (Tank == nullptr)
+    {
+        return;
+    }
+    if (InRange()&& Tank->bAlive)
     {
         Fire();
     }

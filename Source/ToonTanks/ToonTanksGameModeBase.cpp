@@ -6,6 +6,7 @@
 #include "Turret.h"
 #include "Kismet/GameplayStatics.h"
 #include "ToonTanksPlayerController.h"
+#include "Templates/SubclassOf.h"
 
 
 void AToonTanksGameModeBase::BeginPlay()
@@ -13,29 +14,13 @@ void AToonTanksGameModeBase::BeginPlay()
 	Super::BeginPlay();
 	HandleGameStart();
 }
-
-void AToonTanksGameModeBase::ActorDied(AActor* DeadActor)
-{
-	if (DeadActor == Tank)
-	{
-		Tank->HandleDestruction();
-		if (ToonTanksPlayerController)
-		{
-			ToonTanksPlayerController->SetPlayerEnabledState(false);
-		}
-
-	}
-	else if (ATurret* DestroyedTurret = Cast<ATurret>(DeadActor)) // casting to see if the dead actor is a turret
-	{
-		DestroyedTurret->HandleDestruction();
-	}
-}
-
 void AToonTanksGameModeBase::HandleGameStart()
 {
+	TargetTowers = GetTargetTowerCount();
 	Tank = Cast<ATank>(UGameplayStatics::GetPlayerPawn(this, 0)); // getting tank reference
 	ToonTanksPlayerController = Cast<AToonTanksPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 
+	StartGame();
 	//Created a delay before the player can start moving. 3s Count down
 	if (ToonTanksPlayerController)
 	{
@@ -50,4 +35,34 @@ void AToonTanksGameModeBase::HandleGameStart()
 	}
 
 }
+void AToonTanksGameModeBase::ActorDied(AActor* DeadActor)
+{
+	if (DeadActor == Tank)
+	{
+		Tank->HandleDestruction();
+		if (ToonTanksPlayerController)
+		{
+			ToonTanksPlayerController->SetPlayerEnabledState(false);
+		}
+		GameOver(false); //used in the gamemode blueprint, to display the player lost
+	}
+	else if (ATurret* DestroyedTurret = Cast<ATurret>(DeadActor)) // casting to see if the dead actor is a turret
+	{
+		DestroyedTurret->HandleDestruction();
+		TargetTowers--;
+		if (TargetTowers == 0)
+		{
+			GameOver(true); //used in the gamemode blueprint, to display the player won
+		}
+	}
+}
+
+int32 AToonTanksGameModeBase::GetTargetTowerCount()
+{
+	TArray<AActor*> towerArr;
+	UGameplayStatics::GetAllActorsOfClass(this, ATurret::StaticClass(), towerArr);
+	return towerArr.Num();
+}
+
+
 

@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "Projectile.h"
+#include "Particles/ParticleSystem.h"
 // Sets default values
 ABasePawn::ABasePawn()
 {
@@ -42,14 +43,14 @@ void ABasePawn::Fire()
 {
 	FVector projectileSpawnPointLocation = ProjectileSpawnPoint->GetComponentLocation();
 	FRotator projectileSpawnPointRotation = ProjectileSpawnPoint->GetComponentRotation();
-	DrawDebugSphere(
-		GetWorld(),
-		projectileSpawnPointLocation,
-		25.f,
-		12,
-		FColor::Red,
-		false,
-		3.f);
+	//DrawDebugSphere(
+	//	GetWorld(),
+	//	projectileSpawnPointLocation,
+	//	25.f,
+	//	12,
+	//	FColor::Red,
+	//	false,
+	//	3.f);
 
 	//setting the owner of the projectile to the actor that shot it, used in taking damage
 	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, projectileSpawnPointLocation, projectileSpawnPointRotation);
@@ -58,5 +59,9 @@ void ABasePawn::Fire()
 void ABasePawn::HandleDestruction()
 {
 	//TODO: Visual/sound effects
-
+	if (DeathParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, DeathParticles, GetActorLocation(), GetActorRotation());
+	}
+	
 }

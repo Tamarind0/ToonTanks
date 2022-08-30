@@ -5,6 +5,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 // Sets default values
 AProjectile::AProjectile()
 {
@@ -17,6 +18,9 @@ AProjectile::AProjectile()
 	movementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
 	movementComponent->InitialSpeed = 1500.f;
 	movementComponent->MaxSpeed = 1500.f;
+
+	TrailParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Smaoke Trail"));
+	TrailParticles->SetupAttachment(ProjectileMesh);
 }
 
 // Called when the game starts or when spawned
@@ -36,7 +40,11 @@ void AProjectile::Tick(float DeltaTime)
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	auto MyOwner = GetOwner();
-	if (MyOwner == nullptr) return;
+	if (MyOwner == nullptr)
+	{
+		Destroy();
+		return;
+	}
 	//needed to ApplyDamage in teh HealthComponent class
 	auto MyInstigator = MyOwner->GetInstigatorController();
 	//needed parameter
@@ -46,9 +54,14 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		// Generates the damage event which will call the OnTakeDamage delegate that is in HealthComponent and will broadcast to its subscribers
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyInstigator, this, DamageTypeClass); 
-		Destroy();
+		if (HitParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticles, GetActorLocation(), GetActorRotation());
+		}
+		
+		
 	}
 
-
+	Destroy();
 }
 

@@ -31,6 +31,9 @@ private:
 	// used to spawn our blueprint projectile
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		class UParticleSystem* DeathParticles;
 protected:
 	void RotateTurret(FVector LookAtTurret);
 	void Fire();

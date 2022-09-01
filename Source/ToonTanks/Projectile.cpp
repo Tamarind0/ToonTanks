@@ -20,7 +20,7 @@ AProjectile::AProjectile()
 	movementComponent->InitialSpeed = 1500.f;
 	movementComponent->MaxSpeed = 1500.f;
 
-	TrailParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Smaoke Trail"));
+	TrailParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Smoke Trail"));
 	TrailParticles->SetupAttachment(ProjectileMesh);
 }
 

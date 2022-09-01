@@ -17,6 +17,8 @@ public:
 	virtual void Tick(float DealtaTime) override;
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float FireRange = 300;
+	UPROPERTY(EditAnywhere, Category = "Shooting")
+	float FireRate = 2.f;
 	void HandleDestruction();
 protected:
 	// Called when the game starts or when spawned
@@ -26,6 +28,5 @@ private:
 	class ATank* Tank;
 	bool InRange();
 	FTimerHandle FireRateTimerHandle;
-	float FireRate = 2.f;
 	void CheckFireCondition();
 };

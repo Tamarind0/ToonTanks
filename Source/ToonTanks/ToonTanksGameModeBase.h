@@ -17,6 +17,7 @@ class TOONTANKS_API AToonTanksGameModeBase : public AGameModeBase
 	
 public:
 	void ActorDied(AActor* DeadActor);
+	void FinishedLevel(AActor* player);
 private:
 	// getting a reference to our Tank, assigned in BeginPlay
 	class ATank* Tank;
@@ -37,5 +38,8 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void GameOver(bool bWonGame);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void LevelOver(bool bWonGame);
 
 };

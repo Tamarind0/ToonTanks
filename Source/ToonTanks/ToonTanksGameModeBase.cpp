@@ -49,11 +49,24 @@ void AToonTanksGameModeBase::ActorDied(AActor* DeadActor)
 	else if (ATurret* DestroyedTurret = Cast<ATurret>(DeadActor)) // casting to see if the dead actor is a turret
 	{
 		DestroyedTurret->HandleDestruction();
-		TargetTowers--;
-		if (TargetTowers == 0)
+		//not using below bc we want the player to reach the end not just kill all the turrets
+		//TargetTowers--;
+		//if (TargetTowers == 0)
+		//{
+		//	GameOver(true); //used in the gamemode blueprint, to display the player won
+		//}
+	}
+}
+
+void AToonTanksGameModeBase::FinishedLevel(AActor* player)
+{
+	if (player == Tank)
+	{
+		if (ToonTanksPlayerController)
 		{
-			GameOver(true); //used in the gamemode blueprint, to display the player won
+			ToonTanksPlayerController->SetPlayerEnabledState(false);
 		}
+		LevelOver(true);
 	}
 }
 

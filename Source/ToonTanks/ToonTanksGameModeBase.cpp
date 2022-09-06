@@ -56,6 +56,10 @@ void AToonTanksGameModeBase::ActorDied(AActor* DeadActor)
 		//	GameOver(true); //used in the gamemode blueprint, to display the player won
 		//}
 	}
+	else
+	{
+		DeadActor->Destroy();
+	}
 }
 
 void AToonTanksGameModeBase::FinishedLevel(AActor* player)
@@ -65,6 +69,10 @@ void AToonTanksGameModeBase::FinishedLevel(AActor* player)
 		if (ToonTanksPlayerController)
 		{
 			ToonTanksPlayerController->SetPlayerEnabledState(false);
+		}
+		if (Tank)
+		{
+			Tank->bAlive = false;
 		}
 		LevelOver(true);
 	}

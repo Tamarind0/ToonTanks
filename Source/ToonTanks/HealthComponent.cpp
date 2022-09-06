@@ -46,6 +46,6 @@ void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDa
 	{
 		GameMode->ActorDied(DamagedActor);
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health);
+//	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health);
 }
 

@@ -20,7 +20,7 @@ AGameEnd::AGameEnd()
 void AGameEnd::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Beginplay"));
+	//UE_LOG(LogTemp, Warning, TEXT("Beginplay"));
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AGameEnd::OnOverlapBegin);
 	BoxComp->OnComponentEndOverlap.AddDynamic(this, &AGameEnd::OnOverlapEnd);
 	GameMode = Cast<AToonTanksGameModeBase>(UGameplayStatics::GetGameMode(this));
@@ -35,12 +35,12 @@ void AGameEnd::Tick(float DeltaTime)
 
 void AGameEnd::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("OVERLAPPING"));
+//	UE_LOG(LogTemp, Warning, TEXT("OVERLAPPING"));
 	GameMode->FinishedLevel(OtherActor);
 }
 
 void AGameEnd::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	UE_LOG(LogTemp, Warning, TEXT("PAIN"));
+//	UE_LOG(LogTemp, Warning, TEXT("PAIN"));
 }
 

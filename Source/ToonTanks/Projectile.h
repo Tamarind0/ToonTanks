@@ -19,6 +19,7 @@ public:
 
 
 private:
+	class ATank* Tank;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Componets", meta = (AllowPrivateAccess = true))
 		UStaticMeshComponent* ProjectileMesh;
 
@@ -41,7 +42,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Sound")
 		class USoundBase* LaunchSound;
 	UPROPERTY(EditAnywhere, Category = "Sound")
-		class USoundBase* HitSound;
+		class USoundBase* ActorHitSound;
+	UPROPERTY(EditAnywhere, Category = "Sound")
+		class USoundBase* SurroundingHitSound;
 
 	//camera shake
 	UPROPERTY(EditAnywhere, Category = "Camera")
@@ -50,6 +53,7 @@ private:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 public:	
 	// Called every frame

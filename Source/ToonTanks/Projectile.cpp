@@ -7,6 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Camera/CameraShakeBase.h"
+#include "Tank.h"
+#include "Turret.h"
 // Sets default values
 AProjectile::AProjectile()
 {
@@ -31,6 +33,7 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 	// setting up delegate for hit event
 	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	
 	if (LaunchSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
@@ -52,13 +55,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 		Destroy();
 		return;
 	}
-	//needed to ApplyDamage in teh HealthComponent class
+	//needed to ApplyDamage in the HealthComponent class
 	AController* MyInstigator = MyOwner->GetInstigatorController();
 	//needed parameter
 	UClass* DamageTypeClass = UDamageType::StaticClass();
 
 	if (OtherActor != nullptr && OtherActor != this && OtherActor != MyOwner)
 	{
+		Tank = Cast<ATank>(UGameplayStatics::GetPlayerPawn(this, 0)); // getting tank reference
+		
 		// Generates the damage event which will call the OnTakeDamage delegate that is in HealthComponent and will broadcast to its subscribers
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyInstigator, this, DamageTypeClass); 
 		if (HitParticles)
@@ -66,10 +71,29 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticles, GetActorLocation(), GetActorRotation());
 			
 		}
-		if (HitSound)
+		// Specific audio when player or turret land a shot on each other 
+		if (OtherActor == Tank)
 		{
-			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+			if (ActorHitSound)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, ActorHitSound, GetActorLocation());
+			}
 		}
+		else if (ATurret* Turret = Cast<ATurret>(OtherActor))
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ActorHitSound, GetActorLocation());
+		}
+		else
+		{
+			// sound played when the projectile hits something else but the player
+			if (SurroundingHitSound)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, SurroundingHitSound, GetActorLocation());
+			}
+		}
+
+		
+
 		if (HitCameraShakeClass)
 		{
 			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(HitCameraShakeClass);
